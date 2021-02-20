@@ -3,6 +3,8 @@ const {
   readdirSync,
 } = require('fs');
 
+const { createIndexHtml } = require('../compiler');
+
 const {
   outerPath: {
     cssPath,
@@ -19,6 +21,8 @@ const {
 function initFiles () {
   copyFiles('css');
   copyFiles('js');
+  copyWelcomePage();
+  createIndexHtml();
 }
 
 function copyFiles (field) {
@@ -59,6 +63,19 @@ function copyFiles (field) {
       });
     }
   })
+}
+
+//拷贝欢迎页面
+function copyWelcomePage () {
+  const _htmlFiles = readdirSync(htmlPath);
+
+  if (!_htmlFiles.length) {
+    copyFileSync(htmlDir + '/welcome.html', htmlPath + '/welcome.html', 0, function (err) {
+      if (err) {
+        throw new Error('File is failed to copy.', err);
+      }
+    })
+  }
 }
 
 module.exports = initFiles;
