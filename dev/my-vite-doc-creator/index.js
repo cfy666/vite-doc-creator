@@ -21,13 +21,13 @@ class ViteDocCreator {
       Object.assign(this.options, options);
     }
 
-    console.log(this.options);
-
     //执行工具初始化函数
     this.initialize();
   }
 
   initialize () {
+    initFolders(this.options);
+    initFiles(this.options);
   }
 }
 
