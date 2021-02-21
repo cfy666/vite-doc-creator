@@ -5,6 +5,10 @@ const {
   initWatchers
 } = require('./init');
 
+const {
+  mdToHtml
+} = require('./compiler');
+
 class ViteDocCreator {
   constructor (options) {
     this.options = {
@@ -28,6 +32,8 @@ class ViteDocCreator {
   initialize () {
     initFolders(this.options);
     initFiles(this.options);
+    //测试mdToHtml
+    mdToHtml('README.md');
   }
 }
 
