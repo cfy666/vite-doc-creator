@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../css/github-markdown.min.css">
+  <link rel="stylesheet" href="../css/github-gist.min.css">
+  <link rel="stylesheet" href="../css/md.css">
+</head>
+<body>
+  <div class="container">
+    <h1 id="vite-doc-creator">Vite-Doc-Creator</h1>
+<p>A fast and light Document Creator
+一个轻快的文档生成器</p>
+<h2 id="简介">简介</h2>
+<ul>
+<li>这是一个基于<a href="https://github.com/vitejs/vite">vite</a>的文档生成器插件</li>
+</ul>
+<ol>
+<li>快速生成文件界面源码</li>
+<li>编辑markdown生成html页面</li>
+<li>快速生成文档菜单</li>
+</ol>
+<h2 id="依赖">依赖</h2>
+<ol>
+<li>依赖vite编译环境</li>
+<li>插件内自动依赖<a href="https://github.com/markedjs/marked">marked</a>、<a href="https://highlightjs.org/">highlightjs</a></li>
+</ol>
+<h2 id="安装">安装</h2>
+<ol>
+<li>创建工程文件夹<pre><code>mkdir project-<span class="hljs-built_in">name</span>
+</code></pre>
+</li>
+<li>进入文件夹初始化npm<pre><code><span class="hljs-built_in">npm</span> init -y
+</code></pre>
+</li>
+<li>安装<a href="https://github.com/vitejs/vite">vite</a>。作者：<a href="https://github.com/yyx990803">尤雨溪</a><pre><code><span class="hljs-built_in">npm</span> i vite -D
+</code></pre>
+</li>
+<li>修改package.json内部的scripts命令<pre><code class="language-json"><span class="hljs-string">&quot;scripts&quot;</span>: {
+<span class="hljs-string">&quot;dev&quot;</span>: <span class="hljs-string">&quot;vite&quot;</span>,
+<span class="hljs-string">&quot;build&quot;</span>: <span class="hljs-string">&quot;vite build&quot;</span>
+}
+</code></pre>
+</li>
+<li>安装<a href="https://github.com/xiaoyesensen/vite-doc-creator">vite-doc-creator</a>。作者：<a href="https://github.com/xiaoyesensen">小野森森</a><pre><code>npm i vite-<span class="hljs-meta">doc</span>-creator -D
+</code></pre>
+</li>
+</ol>
+<h2 id="vite插件配置">vite插件配置</h2>
+<ol>
+<li>工程文件夹根目录下创建vite.config.js<pre><code>touch vite.<span class="hljs-built_in">config</span>.js
+</code></pre>
+</li>
+<li>vite.config.js配置插件<pre><code class="language-js"><span class="hljs-attribute">const ViteDocCreator</span> = require(<span class="hljs-string">&#x27;vite-doc-creator&#x27;</span>);
+</code></pre>
+</li>
+</ol>
+<p>module.exports = {
+  plugins: [new ViteDocCreator()]
+}</p>
+<pre><code>
+## 启动项目（生成文档编辑目录）
+</code></pre>
+<p>npm run dev</p>
+<pre><code>
+## 插件配置项
+<span class="hljs-number">1.</span> 配置项位置
+```js
+<span class="hljs-keyword">module</span>.exports = {
+  plugins: [new ViteDocCreator({
+    <span class="hljs-comment">// 配置项</span>
+  })]
+}
+</code></pre>
+<ol start="2">
+<li><p>配置项说明</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>说明</th>
+<th>默认值</th>
+<th>必填</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>title</td>
+<td>网页title与header文字标题</td>
+<td>This is my firse DOC by Vite-doc-creator</td>
+<td>否</td>
+</tr>
+<tr>
+<td>domain</td>
+<td>生产环境下的域名（须带协议：http://或https://)</td>
+<td><a href="http://localhost">http://localhost</a></td>
+<td>否</td>
+</tr>
+<tr>
+<td>port</td>
+<td>生成环境下的端口号</td>
+<td>process.env.npm_config_port</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注意：为了避免页面连接生成错误，请尽量不要在开发环境下设置domain与port，除非确保文档页面在该域名或该端口下可以正常访问。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="使用方法">使用方法</h2>
+<ul>
+<li>在workspace文件夹中创建.md文件进行编辑</li>
+<li>保存.md文件后，会自动将文件转换为html文件并生成文件菜单</li>
+<li>页面会自动展示，无需刷新页面</li>
+</ul>
+<h2 id="注意事项">注意事项</h2>
+<ol>
+<li>目前不支持在workspace内创建子文件夹（稍后更新会支持）</li>
+<li>目前不支持修改workspace内的md文件名（稍后更新会支持）</li>
+</ol>
+<h2 id="版本更新">版本更新</h2>
+<p>  20201009：v1.0.0</p>
+<h2 id="原理">原理</h2>
+<ol>
+<li>创建文档工程目录
+src -&gt;
+  js
+  css
+  html
+workspace</li>
+<li>创建文件
+复制：js/css/welcome.html
+编译：index.html      / md.html<pre><code><span class="hljs-attribute"> createIndexHtml   mdToHtml</span>
+</code></pre>
+</li>
+<li>监听文件及文件夹变化
+watchHtml    /  watchMarkdown
+监听html文件夹    监听workspace文件夹</li>
+</ol>
+
+  </div>
+</body>
+</html>
