@@ -7,10 +7,12 @@ const {
 const {
   readFile,
   createMenuItem,
-  replaceHtml
+  replaceHtml,
+  createIframe
 } = require('../libs/utils');
 
 const {
+  title,
   outerPath: {
     htmlPath,
     rootPath
@@ -19,7 +21,10 @@ const {
     htmlDir
   },
   regexp: {
-    reg_ulContent
+    reg_ulContent,
+    reg_titleContent,
+    reg_headerTitleContent,
+    reg_iframeContent
   }
 } = require('../config');
 
@@ -50,6 +55,13 @@ function createIndexHtml (options, outerFilename) {
 
   //替换ul中的内容
   newHtml = replaceHtml(reg_ulContent, _indexHtmlStr, menulist);
+  //替换title中的内容
+  newHtml = replaceHtml(reg_titleContent, newHtml, options.title || title);
+  //替换header-title中的内容
+  newHtml = replaceHtml(reg_headerTitleContent, newHtml, options.title || title);
+  //替换iframe-title中的内容
+  newHtml = replaceHtml(reg_iframeContent, newHtml, createIframe(_htmlFiles[0], options.domain, options.port));
+
 
   /**
    * path: 创建一个文件的路径即文件名
