@@ -38,10 +38,16 @@ const innerDir = {
   jsDir: resolve(__dirname, '../temp_files/js/')
 }
 
+const regexp = {
+  //匹配ul menu-list内部的内容
+  reg_ulContent:/<ul class=\"menu-list\">([\d\D]*?)<\/ul>/
+}
+
 module.exports = {
   port,
   domain,
   title,
   outerPath,
-  innerDir
+  innerDir,
+  regexp
 }
