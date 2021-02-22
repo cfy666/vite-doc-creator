@@ -47,10 +47,13 @@ function createIndexHtml (options, outerFilename) {
 
   let menulist = '';
   let newHtml = '';
+  //如果outerFilename传入，找这个文件名在_htmlFiles里的下标
+  //作为菜单active设置和iframe选择文件的index
+  let curIdx = outerFilename ? [].indexOf.call(_htmlFiles, outerFilename) : 0;
   
   //遍历外层html文件夹下所有的文件，并组合成menulist
   _htmlFiles.map(function (filename, index) {
-    menulist += createMenuItem(filename, options.domain, options.port, index);
+    menulist += createMenuItem(filename, options.domain, options.port, index === curIdx ? true: false);
   })
 
   //替换ul中的内容
@@ -60,7 +63,7 @@ function createIndexHtml (options, outerFilename) {
   //替换header-title中的内容
   newHtml = replaceHtml(reg_headerTitleContent, newHtml, options.title || title);
   //替换iframe-title中的内容
-  newHtml = replaceHtml(reg_iframeContent, newHtml, createIframe(_htmlFiles[0], options.domain, options.port));
+  newHtml = replaceHtml(reg_iframeContent, newHtml, createIframe(_htmlFiles[curIdx], options.domain, options.port));
 
 
   /**

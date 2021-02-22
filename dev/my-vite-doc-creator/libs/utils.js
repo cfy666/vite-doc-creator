@@ -13,7 +13,7 @@ function readFile (path) {
 function createMenuItem (filename, userDomain, userPort, isActive) {
   return `
     <li class="menu-item${ isActive ? ' active' : '' }">
-      <a href="${_formatBaseUrl(userDomain, userPort)}/src/html/${filename}" target="myFrame">${filename.replace('.html', '')}</a>
+      <a href="${_formatBaseUrl(userDomain, userPort)}/src/html/${filename}" target="myIframe">${filename.replace('.html', '')}</a>
     </li>
   `;
 }
