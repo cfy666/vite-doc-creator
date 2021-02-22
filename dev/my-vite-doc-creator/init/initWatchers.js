@@ -1,4 +1,8 @@
-const { watch } = require('fs');
+const { 
+  watch,
+  existsSync,
+  unlinkSync
+} = require('fs');
 
 const {
   outerPath: {
@@ -46,7 +50,22 @@ function watchHtml (options) {
 
 //监听workspace文件夹及文件的变化
 function watchMarkdown () {
-  
+  watch(mdPath, function(event, filename) {
+    //如果文件变化了
+    if (filename) {
+      // 找这个文件在workspace里是否存在
+      //如果不存在，证明是删除操作
+      if (!existsSync(mdPath + '/' + filename)) {
+        //不存在的情况，就要删除html文件夹对应的文件
+        const removingFile = htmlPath + '/' + filename.replace('.md', '.html');
+        existsSync(removingFile) && unlinkSync(removingFile);
+        return;
+      }
+      // 如果filename存在在workspace中，
+      //将这个md文件转换成html放入html文件夹中
+      mdToHtml(filename);
+    }
+  })
 };
 
 module.exports = initWatchers;
